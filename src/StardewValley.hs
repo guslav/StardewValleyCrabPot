@@ -3,11 +3,42 @@
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE TypeApplications #-}
 
-module StardewValley where
+module StardewValley
+    ( Place (..)
+    , Trash (..)
+    , Ocean (..)
+    , Fresh (..)
+    , Item (..)
+    , Farming (..)
+    , Fishing (..)
+    , ProbTree (..)
+    , showPercentage
+    , showTree
+    , showTreeProbs
+    , trashTree
+    , recyclingGoods
+    , multiplesOfRecyclingGoods
+    , recycleTrashTree
+    , recyclingGoodsTree
+    , oceanTree
+    , freshTree
+    , probabilityIntoLeafs
+    , probabilityOfItem
+    , eventProbability
+    , average
+    , getProbabilityTree
+    , isFish
+    , profit
+    , profitsIntoLeafs
+    , averageProfit
+    , trimShow
+    , table
+    , tableRecyclings
+    , roundFraction
+    ) where
 
 import Data.List (intercalate, findIndices)
-import Control.Monad (guard, ap)
-import Text.Printf (printf)
+import Control.Monad (ap)
 import Data.Bifunctor (second)
 
 data Place = InOcean | InFresh 
@@ -61,10 +92,10 @@ showTree = intercalate "\n" . map fst . showTree'
         let subLines = showTree' t
         let lastArrowLine = case findIndices snd subLines of
               [] -> 0
-              l  -> last l
+              l'  -> last l'
         let indent = zipWith (f lastArrowLine) [0..] subLines
         (show p, True) : indent
-    f lastArrowLine _ (line, True) = ("+-->" ++ line, False)
+    f _ _ (line, True) = ("+-->" ++ line, False)
     f lastArrowLine i (line, False)
       | i < lastArrowLine = ("|   " ++ line, False)
       | otherwise         = ("    " ++ line, False)
@@ -75,7 +106,7 @@ instance (Show a, Show d, RealFrac d) => Show (LeafLine d a) where
   show (LeafLine (p, x)) = show x ++ " => " ++ show p ++ " \8776 " ++ showPercentage p
 
 showPercentage :: RealFrac d => d -> String
-showPercentage d = (++"%") $ show $ round $ d * 100
+showPercentage d = (++"%") $ show $ (round $ d * 100 :: Integer)
 
 showTreeProbs :: (Show a, Show d, RealFrac d) => ProbTree d a -> String
 showTreeProbs t = showTree $ LeafLine <$> probabilityIntoLeafs t
@@ -153,25 +184,10 @@ oceanTree = noMarinerTree Ocean [ ( 5 / 100, Lobster)
                                 , (35 / 100, Mussel)
                                 ]
 
-oceanTree' :: Fractional d => ProbTree d Item
-oceanTree' = noMarinerTree Ocean [ (15 / 100, Clam)
-                                , ( 5 / 100, Lobster)
-                                , (10 / 100, Crab)
-                                , (30 / 100, Cockle)
-                                , (35 / 100, Mussel)
-                                , (20 / 100, Shrimp)
-                                , (15 / 100, Oyster)
-                                ]
 
 freshTree :: Fractional d => ProbTree d Item
 freshTree = noMarinerTree Fresh [ (25 / 100, Snail)
                                 , (35 / 100, Crayfish)
-                                , (55 / 100, Periwinkle)
-                                ]
-
-freshTree' :: Fractional d => ProbTree d Item
-freshTree' = noMarinerTree Fresh [ (35 / 100, Crayfish)
-                                , (25 / 100, Snail)
                                 , (55 / 100, Periwinkle)
                                 ]
 
@@ -186,14 +202,14 @@ probabilityOfItem :: (Eq a, Fractional d) => ProbTree d a -> a -> d
 probabilityOfItem tree x = eventProbability tree (==x)
 
 eventProbability :: Fractional d => ProbTree d a -> (a -> Bool) -> d
-eventProbability tree f = sum $ filter <$> probabilityIntoLeafs tree
+eventProbability tree f = sum $ insertProbs <$> probabilityIntoLeafs tree
   where
-    filter (p, x)
+    insertProbs (p, x)
       | f x = p
       | otherwise = 0
 
-avarage :: Fractional d => ProbTree d d -> d
-avarage t = sum $ uncurry (*) <$> probabilityIntoLeafs t
+average :: Fractional d => ProbTree d d -> d
+average t = sum $ uncurry (*) <$> probabilityIntoLeafs t
 
 getProbabilityTree :: Fractional d => Place -> Fishing -> ProbTree d Item
 getProbabilityTree place skill = case (isMariner, place) of
@@ -257,8 +273,8 @@ profit fi fa sashimi item = case item of
 profitsIntoLeafs :: Integral i => Fishing -> Farming -> Bool -> ProbTree d Item -> ProbTree d (Item, i)
 profitsIntoLeafs fi fa sashimi = fmap (\item -> (item, profit fi fa sashimi item))
 
-avarageProfit :: (Fractional d) => Fishing -> Farming -> Bool -> ProbTree d Item -> d
-avarageProfit fi fa sashimi tree = avarage $ fromInteger . snd <$> profitsIntoLeafs fi fa sashimi tree
+averageProfit :: (Fractional d) => Fishing -> Farming -> Bool -> ProbTree d Item -> d
+averageProfit fi fa sashimi tree = average $ fromInteger . snd <$> profitsIntoLeafs fi fa sashimi tree
 
 trimShow :: Show a => Int -> a -> String
 trimShow n str = take n $ show str ++ repeat ' '
@@ -270,8 +286,8 @@ table = intercalate "\n" $ do
   fishing <- everything
   let farming = NoRecycling
   let tree = getProbabilityTree place fishing :: ProbTree Rational Item
-  let profit = avarageProfit fishing farming sashimi tree :: Rational
-  return $ intercalate " " $ [trimShow 7 place, trimShow 10 fishing, trimShow 10 farming, trimShow 5 sashimi, roundFraction 2 profit, show profit]
+  let avprofit = averageProfit fishing farming sashimi tree :: Rational
+  return $ intercalate " " $ [trimShow 7 place, trimShow 10 fishing, trimShow 10 farming, trimShow 5 sashimi, roundFraction 2 avprofit, show avprofit]
 
 tableRecyclings :: String
 tableRecyclings = intercalate "\n" $ do
@@ -279,19 +295,19 @@ tableRecyclings = intercalate "\n" $ do
   sashimi <- everything
   fishing <- everything
   let tree = getProbabilityTree place fishing :: ProbTree Rational Item
-  let profit f = avarageProfit fishing f sashimi tree :: Rational
-  let profits = roundFraction 2 <$> subtract (profit NoRecycling) <$> profit <$> [NoRecycling, NoFarming, Rancher, Artisan]
+  let avprofit f = averageProfit fishing f sashimi tree :: Rational
+  let profits = roundFraction 2 <$> subtract (avprofit NoRecycling) <$> avprofit <$> [NoRecycling, NoFarming, Rancher, Artisan]
   return $ intercalate " " $ [trimShow 7 place, trimShow 10 fishing, trimShow 5 sashimi] ++ profits
 
-roundFraction :: (RealFrac d,Show d) => Int -> d -> String
+roundFraction :: RealFrac d => Int -> d -> String
 roundFraction n f
   | length str <= n = str
   | otherwise       = insertAt (length str - n) '.' str
   where
-    str = show $ round $ f * 10^n
+    str = show $ (round $ f * 10^n :: Integer)
     insertAt :: Int -> a -> [a] -> [a]
     insertAt 0 a l = a : l
-    insertAt i a [] = []
+    insertAt _ _ [] = []
     insertAt i a (x:xs) = x : insertAt (i - 1) a xs
 
 

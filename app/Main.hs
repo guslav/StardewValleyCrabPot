@@ -25,7 +25,7 @@ main = do
             putStr "\nStardewValley> "
             command <- words <$> map toLower <$> getLine
             let tree = getProbabilityTree p i :: ProbTree Rational Item
-            let profit = avarageProfit i a s tree
+            let avprofit = averageProfit i a s tree
             case command of
                 "q":_      -> putStrLn "bye!"
                 "quit":_   -> putStrLn "bye!"
@@ -76,14 +76,14 @@ main = do
                     printcase'
                     main'
                 "profit":_ -> do
-                    putStrLn $ "You would make a profit of (" ++ show profit ++ ") \8776 " ++ roundFraction 2 profit ++ " gold every day."
+                    putStrLn $ "You would make a profit of (" ++ show avprofit ++ ") \8776 " ++ roundFraction 2 avprofit ++ " gold every day."
                     putStrLn $ "Note, that haskell is using '%' for fractions."
                     putStrLn $ "If you want a reasoning for that number type command 'proof'."
                     main'
                 "proof":_  -> do
 
-                    putStrLn $ "You would make a profit of (" ++ show profit ++ ") \8776 " ++ roundFraction 2 profit ++ " gold every day."
-                    putStrLn $ "The number can be optained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number " ++ roundFraction 2 profit ++ "."
+                    putStrLn $ "You would make a profit of (" ++ show avprofit ++ ") \8776 " ++ roundFraction 2 avprofit ++ " gold every day."
+                    putStrLn $ "The number can be optained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number " ++ roundFraction 2 avprofit ++ "."
                     putStrLn $ "NOTE: Haskell is using '%' to print fractions."
                     if a == NoRecycling
                       then putStrLn "NOTE: You are not selling the trash. Therefore all the recycling items (Stone, Coal, Wood, IronOre, Cloth, Torch) get a selling value of 0." 
