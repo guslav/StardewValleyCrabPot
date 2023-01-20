@@ -1,0 +1,18 @@
+/home/gerrit/.stack/programs/x86_64-linux/ghc-tinfo6-9.2.5/lib/ghc-9.2.5/include/ghcversion.h:
+  hash: 8ef6e3cecb29aca3884134f57ae55f780b89ff0e4491f9e76cec81b39be34fe6
+? /home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.6.3.0/build/StardewValleyCrabPot-exe/autogen/Paths_StardewValleyCrabPot.hs
+: hash: 75b81520c223d8b34ff1a5b2af70a31d14f521c165edf36c9b546ec9a6fc4331
+? /home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/.stack-work/dist/x86_64-linux-tinfo6/Cabal-3.6.3.0/build/StardewValleyCrabPot-exe/autogen/cabal_macros.h
+: hash: 5bce089e31c50988155563ec94423fb633ce73c82bbfc7bd4aba7e58bb979a1e
+/home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/CHANGELOG.md:
+  hash: 282371bb8849516da3e7002af77329898c9867b50580e99038a763aa480f2c3b
+/home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/README.md:
+  hash: 4705b30eb700c105add3ac1bd78b292b8677bd5d685a9afe717b09d290ebf16e
+/home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/StardewValleyCrabPot.cabal:
+  hash: acf4718accf9ee01159c72c78c643f751d77bf252957642f32d91f9fd9cae3a9
+/home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/app/Main.hs:
+  hash: 4adede2b2880e9c10fb8aa5d7c68565ce316d4eeca58d6ee88097782d1d60133
+/home/gerrit/Nextcloud/haskell/StardewValleyCrabPot/package.yaml:
+  hash: b70721740e863b24cb369c20e3a425a1f9fd3a578e1dad345270a7a0f8928cd8
+/usr/include/stdc-predef.h:
+  hash: cb08cd5d4cc059a90833ac48a284d25016e8d56ded8ad4cd98d8ac59cc5053f3
