@@ -36,6 +36,8 @@ main = do
                 "help":_   -> help >> main'
                 "printcase":_ -> printcase' >> main'
                 "printtable":_ -> printtable >> main'
+                "onlinetable":_      -> putStrLn onlineTable >> main'
+                "onlinetabletrash":_ -> putStrLn onlineTableTrash >> main'
                 "set":p1:l    -> do
                     case p1 of
                         "place" -> case l of
@@ -114,7 +116,42 @@ printtable = do
         let tree = getProbabilityTree place fishing :: ProbTree Rational Item
         let avprofit = averageProfit fishing farming sashimi tree :: Rational
         putStrLn $ trimmer [show place, show fishing, show farming, show sashimi, roundFraction 2 avprofit, show avprofit]
-      
+
+onlineTable :: String
+onlineTable = (top ++) $ (++ "|}") $ do
+    place <- everything
+    sashimi <- everything
+    left place sashimi ++ right place sashimi
+  where
+    top = "{| class=\"wikitable\"\n|\n! [[Luremaster]] or no Fishing Profession \n! [[Fisher]]\n! [[Fisher|Angler]]\n! [[Mariner]]\n! [[Fisher|Angler]] & [[Mariner]]\n"
+    left :: Place -> Bool -> String
+    left place sashimi = "|- \n! " ++ showPlace place ++ s ++ "\n"
+        where s = if sashimi then " + [[Sashimi]]" else ""
+    right :: Place -> Bool -> String
+    right place sashimi = "| " ++ cell NoFishing ++ "\n| " ++ cell Fisher ++ "\n| " ++ cell Angler ++ "\n| " ++ cell Mariner ++ "\n| " ++ cell MarinerAngler ++ "\n"
+      where
+        cell :: Fishing -> String
+        cell fishing = roundFraction 2 $ (averageProfit fishing NoRecycling sashimi $ getProbabilityTree place fishing :: Rational)
+
+onlineTableTrash :: String
+onlineTableTrash = (top ++) $ (++ "|}") $ do
+    place <- everything
+    left place ++ right place
+  where
+    top = "{| class=\"wikitable\"\n|\n! [[Agriculturist]] or no Farming Profession  \n! [[Rancher]]\n! [[Artisan]]\n"
+    left :: Place -> String
+    left place = "|- \n! " ++ showPlace place ++ "\n"
+    right :: Place -> String
+    right place = "| " ++ cell NoFarming ++ "\n| " ++ cell Rancher ++ "\n| " ++ cell Artisan ++ "\n"
+      where
+        cell :: Farming -> String
+        cell farming =  roundFraction 2 $ prof farming - prof NoRecycling
+        prof :: Farming -> Rational
+        prof farming = (averageProfit NoFishing farming False $ getProbabilityTree place NoFishing :: Rational)
+
+showPlace :: Place -> String
+showPlace InOcean = "Ocean"
+showPlace InFresh = "Freshwater"
 
 printcase :: IORef Place -> IORef Farming -> IORef Fishing -> IORef Bool -> IO ()
 printcase place farming fishing sashimi = do
@@ -166,7 +203,7 @@ help = do
     putStrLn "    5.) That you do NOT want to include the price of fishing bait."
     putStrLn "You can change the presets of 1 - 4 by using the 'set' command."
     putStrLn ""
-    putStrLn "The following commands are available:  'exit', 'q', 'quit', 'help', 'printcase', 'profit', 'proof', 'printtable', 'set'"
+    putStrLn "The following commands are available:  'exit', 'q', 'quit', 'help', 'printcase', 'profit', 'proof', 'printtable', 'onlinetable', 'onlinetabletrash', 'set'"
     putStrLn "    exit: Ends this program."    
     putStrLn "    q:    Same as exit."    
     putStrLn "    quit: Same as exit."
@@ -175,6 +212,8 @@ help = do
     putStrLn "    profit: Shows you how much profit you would make using a crab pot (given the assumption (1. - 5.) from above)."
     putStrLn "    proof: Gives a reasoning for the profit by printing the entire probability tree. "
     putStrLn "    printtable: prints a table with the profits under each possible assumption set (see 1. - 5. above) "
+    putStrLn "    onlinetable: prints a String, that makes a table for stardewvalleywiki.com. See 'https://stardewvalleywiki.com/Talk:Crab_Pot#Calculating_the_gold_per_day' to see an example."
+    putStrLn "    onlinetabletrash: prints a String, that makes a table for stardewvalleywiki.com. See 'https://stardewvalleywiki.com/Talk:Crab_Pot#Calculating_the_gold_per_day' to see an example."
     putStrLn "    set [variable] [value]: Changes one of the assumptions. Valid values for variable are 'place', 'farming', 'fishing' and 'sashimi'."
     putStrLn ""
     putStrLn "     > set place ocean           (preset)"
