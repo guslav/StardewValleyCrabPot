@@ -3,6 +3,7 @@ module Main (main) where
 import Data.IORef
 import Data.Ratio ((%))
 import Data.Char (toLower)
+import Data.List (intercalate)
 
 import System.IO (hSetBuffering, BufferMode(..) , stdout)
 
@@ -34,6 +35,7 @@ main = do
                 "exit":_   -> putStrLn "bye!"
                 "help":_   -> help >> main'
                 "printcase":_ -> printcase' >> main'
+                "printtable":_ -> printtable >> main'
                 "set":p1:l    -> do
                     case p1 of
                         "place" -> case l of
@@ -96,6 +98,24 @@ main = do
                 _ -> putStrLn "Unknown command. Type 'help' if you want a list of valid commands." >> main'
     main'        
 
+printtable :: IO ()
+printtable = do
+  putStrLn $ trimmer ["Place", "FishingSkill", "FarmingSkill", "Sashimi", "profit", "exact profit (fraction)"]
+  allCases summulateCertain
+  where
+    allCases :: (Enum a, Bounded a, Enum b, Bounded b, Enum c, Bounded c, Enum d, Bounded d) => (a -> b -> c -> d -> IO ()) -> IO ()
+    allCases f = sequence_ $ f <$> everything <*> everything <*> everything <*> everything
+    trimmer :: [String] -> String
+    trimmer [a,b,c,d,e,f] = intercalate " " [trim 7 a, trim 12 b, trim 12 c, trim 8 d, trim 8 e, f]
+    trimmer _ = error "something didnt work."
+    trim :: Int -> String -> String
+    trim n str = take n $ str ++  repeat ' '
+    summulateCertain place fishing sashimi farming  = do
+        let tree = getProbabilityTree place fishing :: ProbTree Rational Item
+        let avprofit = averageProfit fishing farming sashimi tree :: Rational
+        putStrLn $ trimmer [show place, show fishing, show farming, show sashimi, roundFraction 2 avprofit, show avprofit]
+      
+
 printcase :: IORef Place -> IORef Farming -> IORef Fishing -> IORef Bool -> IO ()
 printcase place farming fishing sashimi = do
     p <- readIORef place
@@ -146,7 +166,7 @@ help = do
     putStrLn "    5.) That you do NOT want to include the price of fishing bait."
     putStrLn "You can change the presets of 1 - 4 by using the 'set' command."
     putStrLn ""
-    putStrLn "The following commands are available:  'exit', 'q', 'quit', 'help', 'printcase', 'profit', 'proof', 'set'"
+    putStrLn "The following commands are available:  'exit', 'q', 'quit', 'help', 'printcase', 'profit', 'proof', 'printtable', 'set'"
     putStrLn "    exit: Ends this program."    
     putStrLn "    q:    Same as exit."    
     putStrLn "    quit: Same as exit."
@@ -154,6 +174,7 @@ help = do
     putStrLn "    printcase: Shows the assumptions for the calculation. (See 1. - 5.) "
     putStrLn "    profit: Shows you how much profit you would make using a crab pot (given the assumption (1. - 5.) from above)."
     putStrLn "    proof: Gives a reasoning for the profit by printing the entire probability tree. "
+    putStrLn "    printtable: prints a table with the profits under each possible assumption set (see 1. - 5. above) "
     putStrLn "    set [variable] [value]: Changes one of the assumptions. Valid values for variable are 'place', 'farming', 'fishing' and 'sashimi'."
     putStrLn ""
     putStrLn "     > set place ocean           (preset)"
