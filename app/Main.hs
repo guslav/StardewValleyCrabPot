@@ -100,7 +100,7 @@ main = do
 
 printtable :: IO ()
 printtable = do
-  putStrLn $ trimmer ["Place", "FishingSkill", "FarmingSkill", "Sashimi", "profit", "exact profit (fraction)"]
+  putStrLn $ trimmer ["Place", "FishingSkill", "FarmingSkill", "Sashimi", "profit", "exact average profit (fraction)"]
   allCases summulateCertain
   where
     allCases :: (Enum a, Bounded a, Enum b, Bounded b, Enum c, Bounded c, Enum d, Bounded d) => (a -> b -> c -> d -> IO ()) -> IO ()
