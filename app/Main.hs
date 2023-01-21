@@ -16,6 +16,8 @@ main = do
     fishing <- newIORef NoFishing
     sashimi <- newIORef False
     let printcase' = printcase place farming fishing sashimi
+    putStrLn ""
+    putStrLn ""
     putStrLn "Welcome to the stardew valley crab pot calculator. Type 'help' if you want to see a list of the available commands."
     let main' = do
             p <- readIORef place
