@@ -1,0 +1,13 @@
+InFresh_NoRecycling_Mariner_NoSashimi.txt
+
+
+You would make a profit of (160/3) ≈ 53.33 gold every day.
+The number can be obtained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number 53.33.
+NOTE: You are not selling the trash. Therefore all the recycling items (Stone, Coal, Wood, IronOre, Cloth, Torch) get a selling value of 0.
+
+(1/3) ≈ 33.3%
+    Crayfish has a probability of (1/3) ≈ 33.3% and a selling value of 75. Product of both: (25/1) ≈ 25.00
+(1/3) ≈ 33.3%
+    Snail has a probability of (1/3) ≈ 33.3% and a selling value of 65. Product of both: (65/3) ≈ 21.66
+(1/3) ≈ 33.3%
+    Periwinkle has a probability of (1/3) ≈ 33.3% and a selling value of 20. Product of both: (20/3) ≈ 6.66

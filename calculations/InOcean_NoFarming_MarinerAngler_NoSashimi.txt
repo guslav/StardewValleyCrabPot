@@ -1,0 +1,20 @@
+InOcean_NoFarming_MarinerAngler_NoSashimi.txt
+
+
+You would make a profit of (650/7) ≈ 92.85 gold every day.
+The number can be obtained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number 92.85.
+
+(1/7) ≈ 14.2%
+    Lobster has a probability of (1/7) ≈ 14.2% and a selling value of 180. Product of both: (180/7) ≈ 25.71
+(1/7) ≈ 14.2%
+    Clam has a probability of (1/7) ≈ 14.2% and a selling value of 50. Product of both: (50/7) ≈ 7.14
+(1/7) ≈ 14.2%
+    Crab has a probability of (1/7) ≈ 14.2% and a selling value of 150. Product of both: (150/7) ≈ 21.42
+(1/7) ≈ 14.2%
+    Cockle has a probability of (1/7) ≈ 14.2% and a selling value of 75. Product of both: (75/7) ≈ 10.71
+(1/7) ≈ 14.2%
+    Mussel has a probability of (1/7) ≈ 14.2% and a selling value of 45. Product of both: (45/7) ≈ 6.42
+(1/7) ≈ 14.2%
+    Shrimp has a probability of (1/7) ≈ 14.2% and a selling value of 90. Product of both: (90/7) ≈ 12.85
+(1/7) ≈ 14.2%
+    Oyster has a probability of (1/7) ≈ 14.2% and a selling value of 60. Product of both: (60/7) ≈ 8.57

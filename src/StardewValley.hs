@@ -2,6 +2,7 @@
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveFoldable #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module StardewValley
     ( Place (..)
@@ -12,8 +13,11 @@ module StardewValley
     , Farming (..)
     , Fishing (..)
     , ProbTree (..)
+    , MyPercentage (..)
+    , MyRational (..)
     , everything
-    , showPercentage
+ --   , showPercentage
+ --   , showRational
     , showTree
     , showTreeProbs
     , trashTree
@@ -39,6 +43,7 @@ module StardewValley
     ) where
 
 import Data.List (intercalate, findIndices)
+import Data.Ratio (numerator, denominator)
 import Control.Monad (ap)
 import Data.Bifunctor (second)
 
@@ -83,10 +88,10 @@ instance Monad (ProbTree d) where
 everything :: (Enum a, Bounded a) => [a]
 everything = [minBound .. maxBound]
 
-showTree :: (Show a, Show d, Fractional d) => ProbTree d a -> String
+showTree :: forall a d. (Show a, Show d) => ProbTree d a -> String
 showTree = intercalate "\n" . map fst . showTree'
   where
-    showTree' :: (Show a, Show d, Fractional d) => ProbTree d a -> [(String, Bool)]
+    showTree' :: ProbTree d a -> [(String, Bool)]
     showTree' (Leaf x) = [(show x, False)]
     showTree' (Node l) = do
         (p,t) <- l
@@ -104,10 +109,19 @@ showTree = intercalate "\n" . map fst . showTree'
 newtype LeafLine d a = LeafLine (d, a)
 
 instance (Show a, Show d, RealFrac d) => Show (LeafLine d a) where
-  show (LeafLine (p, x)) = show x ++ " => " ++ show p ++ " \8776 " ++ showPercentage p
+  show (LeafLine (p, x)) = show x ++ " => " ++ show p
 
-showPercentage :: RealFrac d => d -> String
-showPercentage d = (++"%") $ show $ (round $ d * 100 :: Integer)
+newtype MyRational = MyRational Rational
+  deriving (Num, Eq, Fractional, RealFrac, Real, Ord)
+
+newtype MyPercentage = MyPercentage Rational
+  deriving (Num, Eq, Fractional, RealFrac, Real, Ord)
+
+instance Show (MyRational) where
+  show (MyRational d) = "(" ++ show (numerator d) ++ "/" ++ show (denominator d) ++ ") \8776 " ++ roundFraction 2 d 
+
+instance Show (MyPercentage) where
+  show (MyPercentage d) = "(" ++ show (numerator d) ++ "/" ++ show (denominator d) ++ ") \8776 " ++ roundFraction 1 (100*d) ++ "%"
 
 showTreeProbs :: (Show a, Show d, RealFrac d) => ProbTree d a -> String
 showTreeProbs t = showTree $ LeafLine <$> probabilityIntoLeafs t
@@ -300,17 +314,11 @@ tableRecyclings = intercalate "\n" $ do
   let profits = roundFraction 2 <$> subtract (avprofit NoRecycling) <$> avprofit <$> [NoRecycling, NoFarming, Rancher, Artisan]
   return $ intercalate " " $ [trimShow 7 place, trimShow 10 fishing, trimShow 5 sashimi] ++ profits
 
-roundFraction :: RealFrac d => Int -> d -> String
-roundFraction n f
-  | length str <= n = str
-  | otherwise       = insertAt (length str - n) '.' str
+roundFraction :: forall d. RealFrac d => Int -> d -> String
+roundFraction n f = show b ++ "." ++ fillLeft n '0' (show c)
   where
-    str = show $ (round $ f * 10^n :: Integer)
-    insertAt :: Int -> a -> [a] -> [a]
-    insertAt 0 a l = a : l
-    insertAt _ _ [] = []
-    insertAt i a (x:xs) = x : insertAt (i - 1) a xs
+    (b,a)  = properFraction f :: (Integer, d)
+    (c,_)  = properFraction (a * 10^n) :: (Integer, d)
 
-
--- NoFishing | Fisher | Angler | Mariner | MarinerAngler  
-
+fillLeft :: Int -> a -> [a] -> [a]
+fillLeft n x l = replicate (n - length l) x ++ l

@@ -1,0 +1,134 @@
+InOcean_NoRecycling_Angler_NoSashimi.txt
+
+
+You would make a profit of (256330479/5000000) ≈ 51.26 gold every day.
+The number can be obtained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number 51.26.
+NOTE: You are not selling the trash. Therefore all the recycling items (Stone, Coal, Wood, IronOre, Cloth, Torch) get a selling value of 0.
+
+(4/5) ≈ 80.0%
++-->(1/20) ≈ 5.0%
+|       Lobster has a probability of (1/25) ≈ 4.0% and a selling value of 180. Product of both: (36/5) ≈ 7.20
++-->(19/20) ≈ 95.0%
+    +-->(1/10) ≈ 10.0%
+    |       Crab has a probability of (19/250) ≈ 7.6% and a selling value of 150. Product of both: (57/5) ≈ 11.40
+    +-->(9/10) ≈ 90.0%
+        +-->(3/20) ≈ 15.0%
+        |       Oyster has a probability of (513/5000) ≈ 10.2% and a selling value of 60. Product of both: (1539/250) ≈ 6.15
+        +-->(17/20) ≈ 85.0%
+            +-->(3/20) ≈ 15.0%
+            |       Clam has a probability of (8721/100000) ≈ 8.7% and a selling value of 50. Product of both: (8721/2000) ≈ 4.36
+            +-->(17/20) ≈ 85.0%
+                +-->(1/5) ≈ 20.0%
+                |       Shrimp has a probability of (49419/500000) ≈ 9.8% and a selling value of 90. Product of both: (444771/50000) ≈ 8.89
+                +-->(4/5) ≈ 80.0%
+                    +-->(3/10) ≈ 30.0%
+                    |       Cockle has a probability of (148257/1250000) ≈ 11.8% and a selling value of 75. Product of both: (444771/50000) ≈ 8.89
+                    +-->(7/10) ≈ 70.0%
+                        +-->(7/20) ≈ 35.0%
+                        |       Mussel has a probability of (2421531/25000000) ≈ 9.6% and a selling value of 45. Product of both: (21793779/5000000) ≈ 4.35
+                        +-->(13/20) ≈ 65.0%
+                            +-->(1/5) ≈ 20.0%
+                            |   +-->(49/100) ≈ 49.0%
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |   |       1xStone has a probability of (73453107/12500000000) ≈ 0.5% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |   |       2xStone has a probability of (73453107/12500000000) ≈ 0.5% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |           3xStone has a probability of (73453107/12500000000) ≈ 0.5% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   +-->(3/10) ≈ 30.0%
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |   |       1xCoal has a probability of (4497129/1250000000) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |   |       2xCoal has a probability of (4497129/1250000000) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |           3xCoal has a probability of (4497129/1250000000) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   +-->(21/100) ≈ 21.0%
+                            |       +-->(1/3) ≈ 33.3%
+                            |       |       1xIronOre has a probability of (31479903/12500000000) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |       +-->(1/3) ≈ 33.3%
+                            |       |       2xIronOre has a probability of (31479903/12500000000) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |       +-->(1/3) ≈ 33.3%
+                            |               3xIronOre has a probability of (31479903/12500000000) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            +-->(1/5) ≈ 20.0%
+                            |   +-->(3/4) ≈ 75.0%
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |   |       1xWood has a probability of (4497129/500000000) ≈ 0.8% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |   |       2xWood has a probability of (4497129/500000000) ≈ 0.8% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   |   +-->(1/3) ≈ 33.3%
+                            |   |           3xWood has a probability of (4497129/500000000) ≈ 0.8% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   +-->(1/4) ≈ 25.0%
+                            |       +-->(1/3) ≈ 33.3%
+                            |       |       1xCoal has a probability of (1499043/500000000) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |       +-->(1/3) ≈ 33.3%
+                            |       |       2xCoal has a probability of (1499043/500000000) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |       +-->(1/3) ≈ 33.3%
+                            |               3xCoal has a probability of (1499043/500000000) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            +-->(1/5) ≈ 20.0%
+                            |   +-->(9/10) ≈ 90.0%
+                            |   |   +-->(1/1) ≈ 100.0%
+                            |   |           3xTorch has a probability of (40474161/1250000000) ≈ 3.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            |   +-->(1/10) ≈ 10.0%
+                            |       +-->(1/1) ≈ 100.0%
+                            |               1xCloth has a probability of (4497129/1250000000) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            +-->(1/5) ≈ 20.0%
+                            |   +-->(1/1) ≈ 100.0%
+                            |       +-->(1/1) ≈ 100.0%
+                            |               1xQuarz has a probability of (4497129/125000000) ≈ 3.5% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+                            +-->(1/5) ≈ 20.0%
+                                +-->(1/1) ≈ 100.0%
+                                    +-->(1/1) ≈ 100.0%
+                                            1xQuarz has a probability of (4497129/125000000) ≈ 3.5% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+(1/5) ≈ 20.0%
++-->(1/5) ≈ 20.0%
+|   +-->(49/100) ≈ 49.0%
+|   |   +-->(1/3) ≈ 33.3%
+|   |   |       1xStone has a probability of (49/7500) ≈ 0.6% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   |   +-->(1/3) ≈ 33.3%
+|   |   |       2xStone has a probability of (49/7500) ≈ 0.6% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   |   +-->(1/3) ≈ 33.3%
+|   |           3xStone has a probability of (49/7500) ≈ 0.6% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   +-->(3/10) ≈ 30.0%
+|   |   +-->(1/3) ≈ 33.3%
+|   |   |       1xCoal has a probability of (1/250) ≈ 0.4% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   |   +-->(1/3) ≈ 33.3%
+|   |   |       2xCoal has a probability of (1/250) ≈ 0.4% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   |   +-->(1/3) ≈ 33.3%
+|   |           3xCoal has a probability of (1/250) ≈ 0.4% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   +-->(21/100) ≈ 21.0%
+|       +-->(1/3) ≈ 33.3%
+|       |       1xIronOre has a probability of (7/2500) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|       +-->(1/3) ≈ 33.3%
+|       |       2xIronOre has a probability of (7/2500) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|       +-->(1/3) ≈ 33.3%
+|               3xIronOre has a probability of (7/2500) ≈ 0.2% and a selling value of 0. Product of both: (0/1) ≈ 0.00
++-->(1/5) ≈ 20.0%
+|   +-->(3/4) ≈ 75.0%
+|   |   +-->(1/3) ≈ 33.3%
+|   |   |       1xWood has a probability of (1/100) ≈ 1.0% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   |   +-->(1/3) ≈ 33.3%
+|   |   |       2xWood has a probability of (1/100) ≈ 1.0% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   |   +-->(1/3) ≈ 33.3%
+|   |           3xWood has a probability of (1/100) ≈ 1.0% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   +-->(1/4) ≈ 25.0%
+|       +-->(1/3) ≈ 33.3%
+|       |       1xCoal has a probability of (1/300) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|       +-->(1/3) ≈ 33.3%
+|       |       2xCoal has a probability of (1/300) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|       +-->(1/3) ≈ 33.3%
+|               3xCoal has a probability of (1/300) ≈ 0.3% and a selling value of 0. Product of both: (0/1) ≈ 0.00
++-->(1/5) ≈ 20.0%
+|   +-->(9/10) ≈ 90.0%
+|   |   +-->(1/1) ≈ 100.0%
+|   |           3xTorch has a probability of (9/250) ≈ 3.6% and a selling value of 0. Product of both: (0/1) ≈ 0.00
+|   +-->(1/10) ≈ 10.0%
+|       +-->(1/1) ≈ 100.0%
+|               1xCloth has a probability of (1/250) ≈ 0.4% and a selling value of 0. Product of both: (0/1) ≈ 0.00
++-->(1/5) ≈ 20.0%
+|   +-->(1/1) ≈ 100.0%
+|       +-->(1/1) ≈ 100.0%
+|               1xQuarz has a probability of (1/25) ≈ 4.0% and a selling value of 0. Product of both: (0/1) ≈ 0.00
++-->(1/5) ≈ 20.0%
+    +-->(1/1) ≈ 100.0%
+        +-->(1/1) ≈ 100.0%
+                1xQuarz has a probability of (1/25) ≈ 4.0% and a selling value of 0. Product of both: (0/1) ≈ 0.00

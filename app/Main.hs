@@ -1,11 +1,15 @@
 module Main (main) where
 
 import Data.IORef
-import Data.Ratio ((%))
+--import Data.Ratio ((%))
 import Data.Char (toLower)
 import Data.List (intercalate)
 
 import System.IO (hSetBuffering, BufferMode(..) , stdout)
+
+import Control.Monad.Writer.Lazy (tell, execWriter)
+
+import System.Directory (createDirectoryIfMissing)
 
 import StardewValley
 
@@ -86,19 +90,39 @@ main = do
                     putStrLn $ "Note, that haskell is using '%' for fractions."
                     putStrLn $ "If you want a reasoning for that number type command 'proof'."
                     main'
-                "proof":_  -> do
-
-                    putStrLn $ "You would make a profit of (" ++ show avprofit ++ ") \8776 " ++ roundFraction 2 avprofit ++ " gold every day."
-                    putStrLn $ "The number can be optained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number " ++ roundFraction 2 avprofit ++ "."
-                    putStrLn $ "NOTE: Haskell is using '%' to print fractions."
-                    if a == NoRecycling
-                      then putStrLn "NOTE: You are not selling the trash. Therefore all the recycling items (Stone, Coal, Wood, IronOre, Cloth, Torch) get a selling value of 0." 
-                      else return ()
-                    putStrLn ""
-                    putStrLn $ showTree $ intoProofLines i a s tree
-                    main'
+                "proof":_  -> putStrLn (showProof p a i s) >> main'
+                "writeproofs":_ -> writeProofs >> main'
                 _ -> putStrLn "Unknown command. Type 'help' if you want a list of valid commands." >> main'
     main'        
+
+writeProofs :: IO ()
+writeProofs = do
+    let folder = "calculations"
+    createDirectoryIfMissing False folder
+    allCases $ \place farming fishing sashimi -> do
+            let filename = (++ ".txt") $ intercalate "_" $ [show place, show farming, show fishing, showSashimi sashimi]
+            let content = filename ++ "\n" ++ showProof place farming fishing sashimi
+            writeFile (folder ++ "/" ++ filename) content
+  where
+    allCases :: (Enum a, Bounded a, Enum b, Bounded b, Enum c, Bounded c, Enum d, Bounded d) => (a -> b -> c -> d -> IO ()) -> IO ()
+    allCases f = sequence_ $ f <$> everything <*> everything <*> everything <*> everything
+    showSashimi :: Bool -> String
+    showSashimi s
+      | s = "Sashimi"
+      | otherwise = "NoSashimi"
+
+showProof :: Place -> Farming -> Fishing -> Bool -> String
+showProof place farming fishing sashimi = execWriter $ do
+    let tellLn = tell . (++"\n")
+    let tree = getProbabilityTree place fishing :: ProbTree MyPercentage Item
+    let avprofit = fromRational $ toRational $ averageProfit fishing farming sashimi tree :: MyRational
+    tellLn $ "\n\nYou would make a profit of " ++ show avprofit ++ " gold every day."
+    tellLn $ "The number can be obtained by the following probability tree. Just add the product of probability and selling value of any leaf in the tree together and you will get the number " ++ roundFraction 2 avprofit ++ "."
+    if farming == NoRecycling
+      then tellLn "NOTE: You are not selling the trash. Therefore all the recycling items (Stone, Coal, Wood, IronOre, Cloth, Torch) get a selling value of 0." 
+      else return ()
+    tellLn ""
+    tellLn $ showTree $ intoProofLines fishing farming sashimi tree
 
 printtable :: IO ()
 printtable = do
@@ -178,19 +202,20 @@ printcase place farming fishing sashimi = do
         False -> putStrLn "You will NOT turn the fish with value less then 75g into sashimi."
         True  -> putStrLn "You will turn the fish with value less then 75g into sashimi."
 
-intoProofLines :: Fishing -> Farming -> Bool -> ProbTree Rational Item -> ProbTree Rational ProofLine
+intoProofLines :: (Fractional d) => Fishing -> Farming -> Bool -> ProbTree d Item -> ProbTree d (ProofLine d)
 intoProofLines fishing farming sashimi tree = (\(prob, item) -> ProofLine prob item (profit fishing farming sashimi item)  )  <$> probabilityIntoLeafs tree
 
-data ProofLine = ProofLine Rational Item Integer
+data ProofLine d = ProofLine d Item Integer
 
-instance Show ProofLine where
-    show (ProofLine probability item value) = showItem item ++ " has a probability of (" ++ show probability ++ ") \8776 " ++ showPercentage probability ++ " and a selling value of " ++ show value ++ ". Product of both: (" 
-                                                                                        ++ show prod ++ ") \8776 " ++ roundFraction 2 prod
+instance (RealFrac d, Show d) => Show (ProofLine d) where
+    show (ProofLine probability item value) = showItem item ++ " has a probability of " ++ show probability ++ " and a selling value of " ++ show value ++ ". Product of both: " ++ show prod
       where
-        prod = probability * (value % 1)
+        prod = fromRational $ toRational $ probability * fromInteger value :: MyRational
         showItem (Trash (n,name) ) = show n ++ "x" ++ show name
         showItem (Ocean o) = show o
         showItem (Fresh f) = show f
+
+
 
 help :: IO ()
 help = do

@@ -33,6 +33,8 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
+    , directory
+    , mtl
   default-language: Haskell2010
 
 executable StardewValleyCrabPot-exe
@@ -45,6 +47,8 @@ executable StardewValleyCrabPot-exe
   build-depends:
       StardewValleyCrabPot
     , base >=4.7 && <5
+    , directory
+    , mtl
   default-language: Haskell2010
 
 test-suite StardewValleyCrabPot-test
@@ -58,4 +62,6 @@ test-suite StardewValleyCrabPot-test
   build-depends:
       StardewValleyCrabPot
     , base >=4.7 && <5
+    , directory
+    , mtl
   default-language: Haskell2010
